@@ -2,4 +2,4 @@ sudo: required
 services:
   - docker
 script:
-- docker build -t zazukoians/hitch .
+- docker build -t jeoffrey54/hitch .
