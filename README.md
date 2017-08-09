@@ -1,6 +1,6 @@
 # Hitch Docker Image [![Build Status](https://travis-ci.org/zazukoians/docker-hitch.svg)](https://travis-ci.org/zazukoians/docker-hitch) [![](https://imagelayers.io/badge/zazukoians/hitch:latest.svg)](https://imagelayers.io/?images=zazukoians/hitch:latest 'Get your own badge on imagelayers.io')
 
-This project builds and ships [Hitch](https://github.com/varnish/hitch) as a Docker image. Hitch is a scalable TLS proxy by Varnish Software. The docker image is based on [Alpine Linux Docker Image](http://gliderlabs.viewdocs.io/docker-alpine/) which provides a tiny base image. The full container is less than 8 megabytes.
+This project builds and ships [Hitch](https://github.com/varnish/hitch) as a Docker image. Hitch is a scalable TLS proxy by Varnish Software. The docker image is based on [Alpine Linux ARM Docker Image](http://gliderlabs.viewdocs.io/docker-alpine/) which provides a tiny base image. The full container is less than 8 megabytes.
 
 If you have any problems with this image please report issues on Github. Pull requests & suggestions are also welcome.
 
@@ -20,14 +20,14 @@ Please refer to the Hitch help page and the Github repository documentation for 
 
 The pre built image can be downloaded using Docker.
 
-    $ docker pull zazukoians/hitch
+    $ docker pull jeoffrey54/hitch
 
 
 ### Build the Docker image by yourself
 
 You can also adjust and build the image according to your needs. Just clone the repository and then execute the build command.
 
-    $ docker build -t zazukoians/hitch .
+    $ docker build -t jeoffrey54/hitch .
 
 
 ### Start the container
@@ -36,13 +36,13 @@ The container has all pre requisites to run Hitch. In case you do not provide yo
 
 By default it will create a certificate for the domain `example.com`, you can override this by providing another name via environment variables. This is not very useful for production but you can start playing around with the image.
 
-    $ sudo docker run -i -d -p 80 -e DOMAIN=myown.example.com zazukoians/hitch
+    $ sudo docker run -i -d -p 80 -e DOMAIN=myown.example.com jeoffrey54/hitch
 
 Note that this alone won't be very useful as the default configuration points to a backend server like Varnish on localhost port 80. This will not work as there is no such server running in this image. Instead combine this image with an instance of a proxy like Varnish Cache. Link the proxy port to this image and point to the correct backend by adjusting the `--backend` option in `HITCH_PARAMS`.
 
 In our setup we override `/etc/ssl/hitch` by a local directory on the Docker host containing the real certificate and then we `link` the hitch image with an instance of Varnish Cache, for example:
 
-    docker run -p 443:443 --name my-hitch -e HITCH_PEM=/etc/ssl/hitch/myreal.pem  -e HITCH_PARAMS="--backend=[varnish]:80 --frontend=[*]:443" --link my-varnish:varnish -v /full/path/on/docker/host/to/conf/hitch/certs:/etc/ssl/hitch zazukoians/hitch
+    docker run -p 443:443 --name my-hitch -e HITCH_PEM=/etc/ssl/hitch/myreal.pem  -e HITCH_PARAMS="--backend=[varnish]:80 --frontend=[*]:443" --link my-varnish:varnish -v /full/path/on/docker/host/to/conf/hitch/certs:/etc/ssl/hitch jeoffrey54/hitch
 
 This assumes that there is another Docker image called `my-varnish` available and it points hitch to this machine. Adjust the name according to whatever Varnish image you might use. We maintain our own version available [here](https://github.com/zazukoians/docker-varnish) 
 
@@ -50,4 +50,4 @@ This assumes that there is another Docker image called `my-varnish` available an
 
 The command above starts the container and runs it in foreground. You can get a console in this image by executing
 
-    $ docker run -ti -p 443 zazukoians/hitch /bin/bash
+    $ docker run -ti -p 443 jeoffrey54/hitch /bin/bash

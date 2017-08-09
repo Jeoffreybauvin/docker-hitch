@@ -1,5 +1,5 @@
-FROM alpine:3.6
-MAINTAINER Adrian Gschwend <adrian.gschwend@zazuko.com>
+FROM easypi/alpine-arm
+MAINTAINER Jeoffrey Bauvin <jeoffrey.bauvin@gmail.com>
 
 ADD build.sh /tmp/build.sh
 RUN /tmp/build.sh
